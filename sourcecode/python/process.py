@@ -39,9 +39,14 @@ def z_encode(p):
             s+=z_encode(p[key])
         return "a:%d:{%s}"%(len(p),s)
     else:                                       #其余->PHP对象
-        pass
-
-    return z_en_php(repr(p))
+        class_name = "_" + p.__class__.__name__                     #对象类名
+        module_name = p.__class__.__module__.replace('.','_')       #对象类所在模块名
+        attrs = p.__dict__                                          #对象属性字典
+        s = ''
+        for key in attrs:
+            s+ = z_encode(key)
+            s+ = z_encode(attrs[key])
+        return "O:%s:%d:{%s}" % ((module_name+class_name), len(attrs), s)
 
 def z_decode(p):
     """
