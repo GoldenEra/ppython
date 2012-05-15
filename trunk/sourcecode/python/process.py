@@ -15,7 +15,8 @@ def z_encode(p):
     encode param from python data
     """
     tp=type(p)
-    if tp == NoneType:                          #None->PHP中的NULL
+    print "返回类型:%s" % tp
+    if p == None:                               #None->PHP中的NULL
         return "N;"
     elif tp==IntType:                           #int->PHP整形
         return "i:%d;"%p
@@ -44,8 +45,8 @@ def z_encode(p):
         attrs = p.__dict__                                          #对象属性字典
         s = ''
         for key in attrs:
-            s+ = z_encode(key)
-            s+ = z_encode(attrs[key])
+            s += z_encode(key)
+            s += z_encode(attrs[key])
         return "O:%s:%d:{%s}" % ((module_name+class_name), len(attrs), s)
 
 def z_decode(p):
@@ -56,9 +57,9 @@ def z_decode(p):
         return None,p[2:]
     elif p[0]=='b' and p[1]==':':       #布尔
         if p[2] == '0':
-            return False,p[3:]
+            return False,p[4:]
         else:
-            return True,p[3:]
+            return True,p[4:]
     elif p[0]=='i' and p[1]==':':       #整形
         i=p.find(';',1)
         return int(p[2:i]),p[i+1:]
@@ -92,7 +93,8 @@ def z_decode(p):
                 pp=pp[1:]
         
         return (d,pp) if flag else (dd,pp)
-    elif p[0]=='O' and p[1]==':':       #对象
+
+    elif p[0]=='O' and p[1]==':':       #对象 TODO
         pass
     else:
         return p,''
@@ -114,6 +116,14 @@ def parse_php_req(p):
 
     return modul, func, d[1:]   
 
+def call_fun(fn):
+    '''反射'''
+    def _(*args, **kw):
+        print "entering " + fn.__name__
+        v = fn(*args, **kw)
+        print "leaving " + fn.__name__
+        return v
+    return _
 
 class ProcessThread(threading.Thread):
     """
@@ -170,20 +180,23 @@ class ProcessThread(threading.Thread):
         modul, func, params = parse_php_req(reqMsg) 
 
         #检查模块、函数是否存在
-        callMod = __import__ (modul)    #根据module名，反射出module
-        if (callMod):
+        try:
+            callMod = __import__ (modul)    #根据module名，反射出module
             print '模块存在:%s' % modul
-        else:
+        except Exception, e:
+            print '模块不存在:%s' % modul
             self._socket.sendall("F" + "module '%s' is not exist!" % modul) #异常
             self._socket.close()
+            return
 
-        callMethod = getattr(callMod, func)
-        if (callMethod):
+        try:
+            callMethod = getattr(callMod, func)
             print '函数存在:%s' % func
-        else:
+        except Exception, e:
+            print '函数不存在:%s' % func
             self._socket.sendall("F" + "function '%s()' is not exist!" % func) #异常
             self._socket.close()
-
+            return
 
         #---------------------------------------------------
         #    3.Python函数调用
@@ -191,8 +204,12 @@ class ProcessThread(threading.Thread):
 
         try:  
             exec "import %s" % modul  #加载模块
-            print "调用函数及参数：%s(%s)" % (modul+'.'+func, params)
 
+            print "调用函数及参数1：%s(%s)" % (modul+'.'+func, params)
+            #params = ','.join([repr(x) for x in params])    
+            params = ','.join([repr(x) for x in params[0]])         
+            print "调用函数及参数2：%s(%s)" % (modul+'.'+func, params)
+            
             exec "ret=%s(%s)" % (modul+'.'+func, params)     #函数调用
         except Exception, e:  
             print '调用Python业务函数异常', e 
@@ -202,7 +219,8 @@ class ProcessThread(threading.Thread):
         #---------------------------------------------------
         #    4.结果返回给PHP
         #---------------------------------------------------
-        
+        retType = type(ret)
+        print "函数返回：%s" % retType
         rspStr = z_encode(ret)  #函数结果组装为PHP序列化字符串
 
         try:  
@@ -216,3 +234,4 @@ class ProcessThread(threading.Thread):
             self._socket.sendall("F" + e) #异常信息返回
         finally:
             self._socket.close()
+            return
