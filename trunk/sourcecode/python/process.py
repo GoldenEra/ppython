@@ -71,8 +71,10 @@ def z_decode(p):
         k=i+1+len+2
         v=p[i+1:k]
         return v[1:-1],p[k+1:]
-    elif p[0]=='a' and p[1]==':':       #list数组
+    elif p[0]=='a' and p[1]==':':       #list数组以及map
         d=[]
+        dd={}
+        flag=1
         i=p.find(':',2)
         n=int(p[2:i])
         pp=p[i+1+1:]
@@ -80,13 +82,16 @@ def z_decode(p):
             v1,pp=z_decode(pp)
             v2,pp=z_decode(pp)
             d.append(v2)
+            dd[v1]=v2
+            if v1 != i:
+                flag=0
         if pp and pp[0]=='}':
             if pp[1:] and pp[1]==';':
                 pp=pp[2:]
             else:
                 pp=pp[1:]
         
-        return d,pp
+        return (d,pp) if flag else (dd,pp)
     elif p[0]=='O' and p[1]==':':       #对象
         pass
     else:
