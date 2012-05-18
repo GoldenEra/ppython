@@ -1,4 +1,5 @@
 #summary One-sentence summary of this page.
+#labels PHPPython数据互转
 
 = PHP-Python数据转换说明 =
 
@@ -17,6 +18,8 @@ $a = "a is " . $a;
 在第一行中，$a是int类型，在第二行中$a变化为string类型。通常“弱”类型语言，像Javascript,VB,PHP等都是这样。PHP中提供了一些函数（is_array()、is_bool()、is_float()、is_integer()等）来获得变量的类型，更直接的方式是观察变量序列化后的排列规则:
 
 ----
+
+=== 整形 ===
 
 {{{
 $a = 10;
@@ -140,7 +143,8 @@ $b = lajp_call("module_test::myMethod1", $a);
 
 echo "b---&gt;" . serialize($b) . "&lt;---<br/>";
 echo "b---&gt;" . $b . "&lt;---<br/>";
-?>}}}
+?>
+}}}
 
 输出:
 {{{
