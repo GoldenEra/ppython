@@ -160,10 +160,9 @@ PHP数据转换到Python
 ||float||float||
 ||array(下标int)||元组||
 ||array(下标string)||字典||
-||对象||对象||
+||对象(PHP4)||对象||
 
 Python数据转换到PHP
-
 
 ||Python||PHP||
 ||int||int||
@@ -173,4 +172,4 @@ Python数据转换到PHP
 ||List||array(下标int)||
 ||元组||array(下标int)||
 ||字典||array(下标string)||
-||对象||对象||
+||对象||对象(PHP4)||
