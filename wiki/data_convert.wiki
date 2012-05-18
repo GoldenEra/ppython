@@ -153,7 +153,7 @@ O:16:"aaa_bbb_ccc_user":2:{s:4:"name";s:8:"zhangsan";s:3:"age";i:30;}
 
 PHP数据转换到Python
 
-||*PHP*||*Python*||
+|| *PHP类型* || *Python类型* ||
 ||int||int||
 ||string||string||
 ||boolean||boolean||
@@ -164,7 +164,7 @@ PHP数据转换到Python
 
 Python数据转换到PHP
 
-||*Python*||*PHP*||
+|| *Python类型* || *PHP类型* ||
 ||int||int||
 ||string||string||
 ||boolean||boolean||
