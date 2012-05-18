@@ -1,0 +1,149 @@
+#summary One-sentence summary of this page.
+
+= PHP-Python数据转换说明 =
+
+本文通过程序样例来介绍PHP和Python之间的的数据怎样相互转换，可作为LAPP的使用规范文档。
+
+
+== PHP序列化数据简介 ==
+
+在PHP语言中，数据类型是隐匿的，并且是根据上下文而自动变化的，比如：
+
+{{{
+$a = 10;
+$a = "a is " . $a;
+}}}
+
+在第一行中，$a是int类型，在第二行中$a变化为string类型。通常“弱”类型语言，像Javascript,VB,PHP等都是这样。PHP中提供了一些函数（is_array()、is_bool()、is_float()、is_integer()等）来获得变量的类型，更直接的方式是观察变量序列化后的排列规则:
+
+----
+
+{{{
+$a = 10;
+echo serialize($a);
+}}}
+
+输出：
+
+{{{
+i:10;
+}}}
+
+i表示int类型，10是其值。
+
+----
+
+{{{
+$a = "abcd";
+echo serialize($a);
+}}}
+
+输出：
+
+{{{
+s:4:"abcd";
+}}}
+
+s表示string类型，4表示长度，"abcd"是其值。
+
+----
+
+{{{
+$a = TRUE;
+echo serialize($a);
+}}}
+
+输出：
+
+{{{
+b:1;
+}}}
+
+b表示boolean类型，1表示TRUE，0表示FALSE。
+
+----
+
+{{{
+$a = 10.24;
+echo serialize($a);
+}}}
+
+输出：
+
+{{{
+d:10.2400000000000002131628207280300557613372802734375;
+}}}
+
+d表示double类型，10.2400000000000002131628207280300557613372802734375是其值。
+
+----
+
+数组、对象等复杂类型也可以序列化：
+
+{{{
+$a = array();
+$a[] = 20;
+$a[] = "abcde";
+$a[] = TRUE;
+
+echo serialize($a);
+}}}
+
+输出：
+
+{{{
+a:3:{i:0;i:20;i:1;s:5:"abcde";i:2;b:1;}
+}}}
+
+开始的a表示array，紧跟着的3表示数组长度，{}内部是数组元素：
+ * {{{i:0;i:20;}}}是第一个元素，i:0;是KEY（表示下标是int类型的0），i:20;是VALUE。
+ * {{{i:1;s:5:"abcde";}}}是第二个元素，i:1;是KEY（表示下标是int类型的1），s:5:"abcde";是VALUE。
+ * {{{i:2;b:1;}}}是第三个元素，i:2;是KEY（表示下标是int类型的2），b:1;是VALUE。
+
+{{{
+$a = array();
+$a["a"] = 20;
+$a["b"] = "abcde";
+$a["c"] = TRUE;
+
+echo serialize($a);
+}}}
+
+输出：
+
+{{{
+a:3:{s:1:"a";i:20;s:1:"b";s:5:"abcde";s:1:"c";b:1;}
+}}}
+
+这里数组下标是字符串，数据结构可以看作是其他语言的Hashtable类型。
+
+----
+
+PHP和Python之间传输的数据封装形式，即是上面这种PHP序列化数据形式。
+
+== Example 1 基本 ==
+
+Python，文件'module_test.py':
+{{{
+def myMethod1(i):
+    return i + 1;
+}}}
+
+
+PHP:
+{{{
+$a = 10;
+echo "a---&gt;" . serialize($a) . "&lt;---<br/>";
+
+$b = lajp_call("aaa.bbb.ccc.MyClass1::myMethod1", $a);
+
+echo "b---&gt;" . serialize($b) . "&lt;---<br/>";
+echo "b---&gt;" . $b . "&lt;---<br/>";
+}}}
+
+输出:
+{{{
+a--->i:10;<---
+b--->i:11;<---
+b--->11<---
+}}}
