@@ -158,7 +158,7 @@ PHP数据转换到Python
 ||string||string||
 ||boolean||boolean||
 ||float||float||
-||array(下标int)||T元组||
+||array(下标int)||元组||
 ||array(下标string)||字典||
 ||对象||对象||
 
