@@ -128,37 +128,49 @@ a:3:{s:1:"a";i:20;s:1:"b";s:5:"abcde";s:1:"c";b:1;}
 
 === 对象 ===
 
+{{{
+class aaa_bbb_ccc_user
+{
+    var $name = "zhangsan";
+    var $age = 30;
+}
+$user = new aaa_bbb_ccc_user;
 
+echo serialize($user);
+}}}
+
+输出：
+
+{{{
+O:16:"aaa_bbb_ccc_user":2:{s:4:"name";s:8:"zhangsan";s:3:"age";i:30;}
+}}}
+
+开始的O标示Object，16是对象类名"aaa_bbb_ccc_user"的长度，接下来的2表示对象有2个属性：name属性（值为"zhangsan"），age属性（值为30）。
 
 ----
 
-PHP和Python之间传输的数据封装形式，即是上面这种PHP序列化数据形式。
+== PHP Python 数据转换 ==
 
-== Example 1 基本 ==
+PHP数据转换到Python
 
-Python，文件'module_test.py':
-{{{
-def myMethod1(i):
-    return i + 1;
-}}}
+||PHP||Python||
+||int||int||
+||string||string||
+||boolean||boolean||
+||float||float||
+||array(下标int)||T元组||
+||array(下标string)||字典||
+||对象||对象||
+
+Python数据转换到PHP
 
 
-PHP:
-{{{
-<?php
-$a = 10;
-echo "a---&gt;" . serialize($a) . "&lt;---<br/>";
-
-$b = lajp_call("module_test::myMethod1", $a);
-
-echo "b---&gt;" . serialize($b) . "&lt;---<br/>";
-echo "b---&gt;" . $b . "&lt;---<br/>";
-?>
-}}}
-
-输出:
-{{{
-a--->i:10;<---
-b--->i:11;<---
-b--->11<---
-}}}
+||Python||PHP||
+||int||int||
+||string||string||
+||boolean||boolean||
+||float||float||
+||List||array(下标int)||
+||元组||array(下标int)||
+||字典||array(下标string)||
+||对象||对象||
