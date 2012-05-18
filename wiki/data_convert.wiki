@@ -132,14 +132,15 @@ def myMethod1(i):
 
 PHP:
 {{{
+<?php
 $a = 10;
 echo "a---&gt;" . serialize($a) . "&lt;---<br/>";
 
-$b = lajp_call("aaa.bbb.ccc.MyClass1::myMethod1", $a);
+$b = lajp_call("module_test::myMethod1", $a);
 
 echo "b---&gt;" . serialize($b) . "&lt;---<br/>";
 echo "b---&gt;" . $b . "&lt;---<br/>";
-}}}
+?>}}}
 
 输出:
 {{{
