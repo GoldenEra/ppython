@@ -1,4 +1,4 @@
-#labels PHPPython数据互转
+#labels PHPPython数据互转（一）
 = PHP-Python数据转换说明 =
 
 本文通过程序样例来介绍PHP和Python之间的的数据怎样相互转换，可作为LAPP的使用规范文档。
@@ -151,18 +151,24 @@ O:16:"aaa_bbb_ccc_user":2:{s:4:"name";s:8:"zhangsan";s:3:"age";i:30;}
 
 == PHP Python 数据转换 ==
 
-PHP数据转换到Python
+首先必须清楚，PHP数据类型和Python数据类型并非可以一一对应，因此数据转换需要做出必要的规定，比如在Python中有List、元组、字典等数据类型，而PHP相应的容器型数据类型只有数组，数据转换详细参看下面的表格：
+
+PHP数据转换到Python：
 
 || *PHP类型* || *Python类型* ||
 ||int||int||
 ||string||string||
 ||boolean||boolean||
 ||float||float||
-||array(下标int)||元组||
-||array(下标string)||字典||
-||对象(PHP4)||对象||
+||array(下标int)*||元组||
+||array(下标string)*||字典||
+||对象(PHP4)*||对象||
 
-Python数据转换到PHP
+*1) 当PHP数组第一个元素的下标是int类型0时，转换到Python的List
+*2) 当PHP数组第一个元素的下标非int类型0时，转换到Python的字典，下标作为元组的key
+*3) 目前只支持PHP4对象的转换
+
+Python数据转换到PHP：
 
 || *Python类型* || *PHP类型* ||
 ||int||int||
