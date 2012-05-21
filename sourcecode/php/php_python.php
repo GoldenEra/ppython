@@ -1,7 +1,7 @@
  <?php
 //-----------------------------------------------------------
-// LAPP-php socket script. 
-//   (2012-15 http://code.google.com/p/lajp/)
+// PPython(PHP and Python). 
+//   (2012-15 http://code.google.com/p/ppython/)
 // 
 // License: http://www.apache.org/licenses/LICENSE-2.0
 //-----------------------------------------------------------
