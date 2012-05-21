@@ -7,7 +7,9 @@ import socket
 from types import *
 
 REQUEST_MIN_LEN = 10    #合法的request消息包最小长度    
-TIMEOUT = 180            #socket处理时间180秒
+TIMEOUT = 180           #socket处理时间180秒
+
+pc_dict = {}        #预编译字典，key:调用模块、函数、参数字符串，值是元组(模块文件日期,编译对象)
 
 
 def z_encode(p):
@@ -116,15 +118,6 @@ def parse_php_req(p):
 
     return modul, func, d[1:]   
 
-def call_fun(fn):
-    '''反射'''
-    def _(*args, **kw):
-        print "entering " + fn.__name__
-        v = fn(*args, **kw)
-        print "leaving " + fn.__name__
-        return v
-    return _
-
 class ProcessThread(threading.Thread):
     """
     preThread 处理线程
@@ -133,7 +126,7 @@ class ProcessThread(threading.Thread):
         threading.Thread.__init__(self)
 
         #客户socket
-        self._socket = socket 
+        self._socket = socket
 
     def run(self):
 
@@ -141,7 +134,7 @@ class ProcessThread(threading.Thread):
         #    1.接收消息
         #  消息报文格式：
         #  示例： 60,s:25:"aaa.bbb.ccc.modul1::func1";a:1:{i:0;s:x:"login";}
-        #  说明： 
+        #  说明：
         #   1）开始的60，标示逗号后的消息体长度
         #   2）第一个元素，表示要调用的Python函数，aaa.bbb.ccc.modul1包模块名，func1函数名
         #   3）从‘a’开始，是函数入参
@@ -168,26 +161,30 @@ class ProcessThread(threading.Thread):
             print "请求包：%s" % reqMsg
 
         except Exception, e:  
-            print '接收消息异常', e 
+            print '接收消息异常', e
             self._socket.close()
             return
 
         #---------------------------------------------------
-        #    2.请求消息包格式检查
+        #    2.调用模块、函数检查，预编译。
         #---------------------------------------------------
 
         #从消息包中解析出模块名、函数名、入参list
-        modul, func, params = parse_php_req(reqMsg) 
+        modul, func, params = parse_php_req(reqMsg)
 
-        #检查模块、函数是否存在
-        try:
-            callMod = __import__ (modul)    #根据module名，反射出module
-            print '模块存在:%s' % modul
-        except Exception, e:
-            print '模块不存在:%s' % modul
-            self._socket.sendall("F" + "module '%s' is not exist!" % modul) #异常
-            self._socket.close()
-            return
+        if (pc_dict.has_key(modul) == False):   #预编译字典中没有此编译模块
+            #检查模块、函数是否存在
+            try:
+                callMod = __import__ (modul)    #根据module名，反射出module
+                print '模块存在:%s' % modul
+                pc_dict[modul] = callMod        #预编译字典缓存此模块
+            except Exception, e:
+                print '模块不存在:%s' % modul
+                self._socket.sendall("F" + "module '%s' is not exist!" % modul) #异常
+                self._socket.close()
+                return
+        else:
+            callMod = pc_dict[modul]            #从预编译字典中获得模块对象
 
         try:
             callMethod = getattr(callMod, func)
@@ -202,17 +199,29 @@ class ProcessThread(threading.Thread):
         #    3.Python函数调用
         #---------------------------------------------------
 
-        try:  
-            exec "import %s" % modul  #加载模块
+        try: 
+            #加载模块(预编译)
+            compStr = "import %s" % modul  
+            if (pc_dict.has_key(compStr) == False):
+                print "需要预编译"
+                rpObj = compile(compStr, '', 'single')
+                pc_dict[compStr] = rpObj
+            exec pc_dict[compStr]
 
             print "调用函数及参数1：%s(%s)" % (modul+'.'+func, params)
-            #params = ','.join([repr(x) for x in params])    
             params = ','.join([repr(x) for x in params[0]])         
             print "调用函数及参数2：%s(%s)" % (modul+'.'+func, params)
-            
-            exec "ret=%s(%s)" % (modul+'.'+func, params)     #函数调用
+
+            #加载函数（预编译）
+            compStr = "ret=%s(%s)" % (modul+'.'+func, params)
+            if (pc_dict.has_key(compStr) == False):
+                rpObj = compile(compStr, '', 'single')
+                pc_dict[compStr] = rpObj
+
+            exec pc_dict[compStr]     #函数调用
+            #exec "ret=%s(%s)" % (modul+'.'+func, params)     #函数调用
         except Exception, e:  
-            print '调用Python业务函数异常', e 
+            print '调用Python业务函数异常', e
             self._socket.close()
             return
 
@@ -230,7 +239,7 @@ class ProcessThread(threading.Thread):
             print "返回包：%s" % rspStr
             self._socket.sendall(rspStr)
         except Exception, e:  
-            print '发送消息异常', e 
+            print '发送消息异常', e
             self._socket.sendall("F" + e) #异常信息返回
         finally:
             self._socket.close()
