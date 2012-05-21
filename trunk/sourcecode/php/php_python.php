@@ -42,10 +42,10 @@ function ppython()
     	throw new Exception("[LAPP Error] socket connect error.", SOCKET_ERROR);
 	}
 
-  //Python模块函数
-  $pythonFunc = $arg_array[0];
-  //参数
-  $arg_array = array_slice($arg_array, 1);
+	//Python模块函数
+	$pythonFunc = $arg_array[0];
+	//参数
+	$arg_array = array_slice($arg_array, 1);
 
 	//消息体序列化
 	$request = serialize($pythonFunc).serialize($arg_array);
