@@ -85,6 +85,21 @@ d表示double类型，10.2400000000000002131628207280300557613372802734375是其
 
 ----
 
+=== 空（NULL） ===
+
+{{{
+$a = NULL;
+echo serialize($a);
+}}}
+
+输出：
+
+{{{
+N;
+}}}
+
+----
+
 === 数组 ===
 
 {{{
@@ -122,7 +137,7 @@ echo serialize($a);
 a:3:{s:1:"a";i:20;s:1:"b";s:5:"abcde";s:1:"c";b:1;}
 }}}
 
-这里数组下标是字符串，数据结构可以看作是其他语言的Hashtable类型。
+这里数组下标是字符串，数据结构可以看作是Python的字典类型，实际上也是按字典转换到Python的。
 
 ----
 
@@ -177,7 +192,13 @@ O:16:"aaa_bbb_ccc_user":2:{s:4:"name";s:8:"zhangsan";s:3:"age";i:30;}
 ||string||string||
 ||boolean||boolean||
 ||float||float||
-||List||array(下标int)||
-||元组||array(下标int)||
-||字典||array(下标string)||
-||对象||对象(PHP4)||
+||List*||array(下标int)||
+||元组*||array(下标int)||
+||字典*||array(下标string)||
+||对象*||对象(PHP4)||
+
+1) List和元组在转换到PHP的数组时，按顺序自动添加PHP数组下标，从0开始
+
+2) 字典同样转换到PHP的数组，字典的key作为数组的下标
+
+3) 对象的转换规则请看后面的文档
