@@ -23,23 +23,23 @@ function ppython()
 	//参数数量不能小于1
 	if ($args_len < 1)
 	{
-		throw new Exception("[LAPP Error] lapp_call function's arguments length < 1", PARAM_TYPE_ERROR);
+		throw new Exception("[PPython Error] lapp_call function's arguments length < 1", PARAM_TYPE_ERROR);
 	}
 	//第一个参数是Python模块函数名称，必须是string类型 
 	if (!is_string($arg_array[0]))
 	{
-		throw new Exception("[LAPP Error] lapp_call function's first argument must be string \"module_name::function_name\".", PARAM_TYPE_ERROR);
+		throw new Exception("[PPython Error] lapp_call function's first argument must be string \"module_name::function_name\".", PARAM_TYPE_ERROR);
 	}
 
 
 	if (($socket = socket_create(AF_INET, SOCK_STREAM, 0)) === false) 
 	{
-    	throw new Exception("[LAPP Error] socket create error.", SOCKET_ERROR);
+    	throw new Exception("[PPython Error] socket create error.", SOCKET_ERROR);
 	}
 
 	if (socket_connect($socket, LAJP_IP, LAJP_PORT) === false) 
 	{
-    	throw new Exception("[LAPP Error] socket connect error.", SOCKET_ERROR);
+    	throw new Exception("[PPython Error] socket connect error.", SOCKET_ERROR);
 	}
 
 	//Python模块函数
@@ -61,7 +61,7 @@ function ppython()
 		//发送
 		if (($sends = socket_write($socket, $request, strlen($request))) === false)
 		{
-			throw new Exception("[LAPP Error] socket write error.", SOCKET_ERROR);
+			throw new Exception("[PPython Error] socket write error.", SOCKET_ERROR);
 		}
 		
 		$send_len += $sends;
@@ -76,7 +76,7 @@ function ppython()
 		$recv = "";
 		if (($recv = socket_read($socket, 1400)) === false)
 		{
-			throw new Exception("[LAPP Error] socket read error.", SOCKET_ERROR);
+			throw new Exception("[PPython Error] socket read error.", SOCKET_ERROR);
 		}
 		
 		if ($recv == "")
@@ -101,7 +101,7 @@ function ppython()
 	if ($rsp_stat == "F")
 	{
 		//异常信息不用反序列化
-		throw new Exception("[LAPP Error] Receive Python exception: ".$rsp_msg, LAJP_EXCEPTION);
+		throw new Exception("[PPython Error] Receive Python exception: ".$rsp_msg, LAJP_EXCEPTION);
 	}
 	else
 	{
