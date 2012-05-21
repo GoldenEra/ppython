@@ -13,7 +13,7 @@ define("PARAM_TYPE_ERROR", 101);		//参数类型错误
 define("SOCKET_ERROR", 102);			//SOCKET错误
 define("LAJP_EXCEPTION", 104);			//Python端反馈异常
 
-function lapp_call()
+function ppython()
 {
 	//参数数量
 	$args_len = func_num_args();
@@ -42,10 +42,10 @@ function lapp_call()
     	throw new Exception("[LAPP Error] socket connect error.", SOCKET_ERROR);
 	}
 
-    //Python模块函数
-    $pythonFunc = $arg_array[0];
-    //参数
-    $arg_array = array_slice($arg_array, 1);
+  //Python模块函数
+  $pythonFunc = $arg_array[0];
+  //参数
+  $arg_array = array_slice($arg_array, 1);
 
 	//消息体序列化
 	$request = serialize($pythonFunc).serialize($arg_array);
