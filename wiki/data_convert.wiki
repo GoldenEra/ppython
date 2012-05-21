@@ -171,6 +171,7 @@ O:16:"aaa_bbb_ccc_user":2:{s:4:"name";s:8:"zhangsan";s:3:"age";i:30;}
 *PHP数据转换到Python：*
 
 || *PHP类型* || *Python类型* ||
+||NULL||None||
 ||int||int||
 ||string||string||
 ||boolean||boolean||
@@ -188,6 +189,7 @@ O:16:"aaa_bbb_ccc_user":2:{s:4:"name";s:8:"zhangsan";s:3:"age";i:30;}
 *Python数据转换到PHP：*
 
 || *Python类型* || *PHP类型* ||
+||None||NULL||
 ||int||int||
 ||string||string||
 ||boolean||boolean||
