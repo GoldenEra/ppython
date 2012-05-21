@@ -164,9 +164,11 @@ PHP数据转换到Python：
 ||array(下标string)*||字典||
 ||对象(PHP4)*||对象||
 
-*1) 当PHP数组第一个元素的下标是int类型0时，转换到Python的List
-*2) 当PHP数组第一个元素的下标非int类型0时，转换到Python的字典，下标作为元组的key
-*3) 目前只支持PHP4对象的转换
+1) 当PHP数组第一个元素的下标是int类型0时，转换到Python的List
+
+2) 当PHP数组第一个元素的下标非int类型0时，转换到Python的字典，下标作为元组的key
+
+3) 目前只支持PHP4对象的转换
 
 Python数据转换到PHP：
 
