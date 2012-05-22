@@ -64,3 +64,22 @@ def echo(name):
 ----
 
 === boolean ===
+
+PHP:
+{{{
+<?php header("Content-Type: text/html; charset=utf-8");
+require_once('php_python.php');
+
+echo ppython("true_false::isTrue", False, True) ? "T" : "F"; //打印“T” 
+echo "<br/>";
+echo ppython("true_false::isTrue", False, False) ? "T" : "F"; //打印“F” 
+?>
+}}}
+
+Python (文件true_false.py):
+{{{
+def isTrue(a, b):
+    return a or b
+}}}
+
+----
