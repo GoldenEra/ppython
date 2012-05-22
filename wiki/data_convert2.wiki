@@ -8,6 +8,8 @@
 
 基本数据类型有：int、string、float、boolean、NUL。
 
+----
+
 === int ===
 
 PHP:
@@ -25,3 +27,7 @@ Python (文件testMod.py):
 def add(x, y):
     return x + y
 }}}
+
+在这个例子中，Python提供了一个加法函数服务，PHP调用这个函数，传入参数，并得到返回值。
+
+=== string ===
