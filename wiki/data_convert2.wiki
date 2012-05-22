@@ -1,0 +1,27 @@
+#labels PHPPython数据转换（二）
+= PHP-Python数据转换说明（二） =
+
+这里的代码示例，讲述了PHP和Python之间各种数据类型的转换过程和细节。
+
+
+== 基本数据类型 ==
+
+基本数据类型有：int、string、float、boolean、NUL。
+
+=== int ===
+
+PHP:
+{{{
+$a = 20;
+$b = 30;
+
+$ret = ppython("testMod::add", 20, 30); //调用Python的add函数
+
+echo "result:" . $ret;  
+}}}
+
+Python (文件testMod.py):
+{{{
+def add(x, y):
+    return x + y
+}}}
