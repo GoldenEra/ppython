@@ -96,7 +96,7 @@ require_once('php_python.php');
 $ret = ppython("float::ten", 9.9999999999999999);
 echo $ret;
 ?>
-}}
+}}}
 
 Python (文件float.py):
 {{{
