@@ -59,7 +59,7 @@ def echo(name):
     return name + ",你好"
 }}}
 
-字符串传输，需要注意字符集，这里PHP和Python都采用utf-8，如果字符集不通，请参照配置文档。
+字符串传输，需要注意字符集，这里PHP和Python都采用utf-8，如果字符集不同，请参照配置文档。
 
 ----
 
@@ -80,6 +80,28 @@ Python (文件true_false.py):
 {{{
 def isTrue(a, b):
     return a or b
+}}}
+
+这里Python的isTrue函数进行“或”运算。
+
+----
+
+=== float ===
+
+PHP:
+{{{
+<?php header("Content-Type: text/html; charset=utf-8");
+require_once('php_python.php');
+
+$ret = ppython("float::ten", 9.9999999999999999);
+echo $ret;
+?>
+}}
+
+Python (文件float.py):
+{{{
+def ten(d):
+    return d * 10
 }}}
 
 ----
