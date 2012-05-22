@@ -1,4 +1,4 @@
-#labels PHPPython数据互转（一）
+#labels PHPPython数据转换（一）
 = PHP-Python数据转换说明 =
 
 本文通过程序样例来介绍PHP和Python之间的的数据怎样相互转换，可作为LAPP的使用规范文档。
