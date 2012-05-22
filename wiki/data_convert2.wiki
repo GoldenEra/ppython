@@ -14,12 +14,16 @@
 
 PHP:
 {{{
+<?php header("Content-Type: text/html; charset=utf-8");
+require_once('php_python.php');
+
 $a = 20;
 $b = 30;
 
-$ret = ppython("testMod::add", 20, 30); //调用Python的add函数
+$ret = ppython("testmod::add", 20, 30); //调用Python的add函数
 
-echo "result:" . $ret;  
+echo "result:" . $ret; //这里会打印“result:50”
+?> 
 }}}
 
 Python (文件testMod.py):
@@ -30,4 +34,33 @@ def add(x, y):
 
 在这个例子中，Python提供了一个加法函数服务，PHP调用这个函数，传入参数，并得到返回值。
 
+----
+
 === string ===
+
+PHP:
+{{{
+<?php header("Content-Type: text/html; charset=utf-8");
+require_once('php_python.php');
+
+$str = "Tom";
+
+$ret = ppython("hello::echo", $str); 
+
+echo $ret;  //打印 “Tom,你好”
+?>
+}}}
+
+Python (文件hello.py):
+{{{
+# -*- coding: utf-8 -*-
+
+def echo(name):
+    return name + ",你好"
+}}}
+
+字符串传输，需要注意字符集，这里PHP和Python都采用utf-8，如果字符集不通，请参照配置文档。
+
+----
+
+=== boolean ===
