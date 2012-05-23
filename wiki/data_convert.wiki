@@ -122,6 +122,8 @@ a:3:{i:0;i:20;i:1;s:5:"abcde";i:2;b:1;}
  * {{{i:1;s:5:"abcde";}}}是第二个元素，i:1;是KEY（表示下标是int类型的1），s:5:"abcde";是VALUE。
  * {{{i:2;b:1;}}}是第三个元素，i:2;是KEY（表示下标是int类型的2），b:1;是VALUE。
 
+这种下标为自增int类型的数组，转换到Python的List类型。
+
 {{{
 $a = array();
 $a["a"] = 20;
@@ -162,6 +164,8 @@ O:16:"aaa_bbb_ccc_user":2:{s:4:"name";s:8:"zhangsan";s:3:"age";i:30;}
 
 开始的O标示Object，16是对象类名"aaa_bbb_ccc_user"的长度，接下来的2表示对象有2个属性：name属性（值为"zhangsan"），age属性（值为30）。
 
+PHP4中没有命名空间，因此"aaa_bbb_ccc_user"对应Python的 aaa.bbb.ccc.user 对象，$name和$age和Python对象的属性name和age对应。
+
 ----
 
 == PHP Python 数据转换 ==
@@ -182,7 +186,7 @@ O:16:"aaa_bbb_ccc_user":2:{s:4:"name";s:8:"zhangsan";s:3:"age";i:30;}
 
 1) 当PHP数组第一个元素的下标是int类型0时，转换到Python的List
 
-2) 当PHP数组第一个元素的下标非int类型0时，转换到Python的字典，下标作为元组的key
+2) 当PHP数组第一个元素的下标非int类型0时，转换到Python的字典，下标字符串作为字典的key
 
 3) 目前只支持PHP4对象的转换
 
