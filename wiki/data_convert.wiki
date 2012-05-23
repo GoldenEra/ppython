@@ -180,9 +180,9 @@ PHP4中没有命名空间，因此"aaa_bbb_ccc_user"对应Python的 aaa.bbb.ccc.
 ||string||string||
 ||boolean||boolean||
 ||float||float||
-||array(下标int)*||元组||
-||array(下标string)*||字典||
-||对象(PHP4)*||对象||
+||array(下标int),,1||元组||
+||array(下标string),,2||字典||
+||对象(PHP4),,3||对象||
 
 1) 当PHP数组第一个元素的下标是int类型0时，转换到Python的List
 
@@ -198,10 +198,10 @@ PHP4中没有命名空间，因此"aaa_bbb_ccc_user"对应Python的 aaa.bbb.ccc.
 ||string||string||
 ||boolean||boolean||
 ||float||float||
-||List*||array(下标int)||
-||元组*||array(下标int)||
-||字典*||array(下标string)||
-||对象*||对象(PHP4)||
+||List,,1||array(下标int)||
+||元组,,1||array(下标int)||
+||字典,,2||array(下标string)||
+||对象,,3||对象(PHP4)||
 
 1) List和元组在转换到PHP的数组时，按顺序自动添加PHP数组下标，从0开始
 
