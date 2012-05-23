@@ -149,6 +149,44 @@ a:5:{i:0;i:10;i:1;b:1;i:2;s:4:"abcd";i:3;d:3.14159260000000006840537025709636509
 a:5:{i:0;N;i:1;d:3.14159260000000006840537025709636509418487548828125;i:2;s:4:"abcd";i:3;b:1;i:4;i:10;}
 }}}
 
+PHP数组可以模拟其他语言的List、Map、栈等，这里的映射规定：如果PHP数组第一个元素下标是int的0，转换为Python的元组(tuple)；反之，Python的List、元组转换到PHP数组时，按顺序添加数组下标，从0开始。
+
 ==== 例2 ====
+
+PHP：
+{{{
+<?php header("Content-Type: text/html; charset=utf-8");
+require_once('php_python.php');
+
+$a = array();
+$a['name'] = 'zhangsan';
+$a['age'] = 30;
+
+echo serialize($a);  //打印数组$a的序列化结构
+$ret = ppython("arr::userinfo", $a);
+echo "<br/>";
+echo serialize($ret);  //打印python返回的数据的序列化结构
+?>
+}}}
+
+Python (文件arr.py):
+{{{
+def backorder(arr):
+    return arr[::-1]
+
+def userinfo(arr):
+    arr['id'] = '0001'; #增加一个元素
+    return arr
+}}}
+
+arr.py中增加了一个函数userinfo.
+
+输出：
+{{{
+a:2:{s:4:"name";s:8:"zhangsan";s:3:"age";i:30;}
+a:3:{s:3:"age";i:30;s:4:"name";s:8:"zhangsan";s:2:"id";s:4:"0001";}
+}}}
+
+PHP数组下标如果是字符串类型，转换到Python的字典类型，PHP数组元素下标为字典的key；反之，Python字典转换到PHP数组时，字典key作为PHP数组下标。
 
 ----
