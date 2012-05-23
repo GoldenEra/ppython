@@ -6,7 +6,7 @@
 
 == 基本数据类型 ==
 
-基本数据类型有：int、string、float、boolean、NUL。
+基本数据类型有：int、string、float、boolean。
 
 ----
 
@@ -103,5 +103,52 @@ Python (文件float.py):
 def ten(d):
     return d * 10
 }}}
+
+----
+
+== 容器型数据类型 ==
+
+PHP的数组、对象，Python的List、元组、字典、对象，这些可以包容子元素的数据类型，这里称之为容器型数据类型。
+
+----
+
+=== 数组 ===
+
+==== 例1 ====
+
+PHP:
+{{{
+<?php header("Content-Type: text/html; charset=utf-8");
+require_once('php_python.php');
+
+$a = array();
+$a[0] = 10;
+$a[1] = true;
+$a[2] = "abcd";
+$a[3] = 3.1415926;
+$a[4] = NULL;
+
+echo serialize($a);  //打印数组$a的序列化结构
+$ret = ppython("arr::backorder", $a);
+echo "<br/>";
+echo serialize($ret); //打印python返回的数据的序列化结构
+?>
+}}}
+
+Python (文件arr.py):
+{{{
+def backorder(arr):
+    return arr[::-1]
+}}}
+
+backorder函数倒序arr数组，`[::-1]`是python的语法糖。
+
+输出：
+{{{
+a:5:{i:0;i:10;i:1;b:1;i:2;s:4:"abcd";i:3;d:3.14159260000000006840537025709636509418487548828125;i:4;N;}
+a:5:{i:0;N;i:1;d:3.14159260000000006840537025709636509418487548828125;i:2;s:4:"abcd";i:3;b:1;i:4;i:10;}
+}}}
+
+==== 例2 ====
 
 ----
