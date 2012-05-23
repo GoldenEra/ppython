@@ -166,6 +166,8 @@ echo serialize($a);  //打印数组$a的序列化结构
 $ret = ppython("arr::userinfo", $a);
 echo "<br/>";
 echo serialize($ret);  //打印python返回的数据的序列化结构
+echo "<br/>";
+echo $ret['id']; //打印 '0001'
 ?>
 }}}
 
@@ -175,7 +177,7 @@ def backorder(arr):
     return arr[::-1]
 
 def userinfo(arr):
-    arr['id'] = '0001'; #增加一个元素
+    arr['id'] = '0001'; #增加一个元素，key为'id'，值为'0001'
     return arr
 }}}
 
@@ -185,6 +187,7 @@ arr.py中增加了一个函数userinfo.
 {{{
 a:2:{s:4:"name";s:8:"zhangsan";s:3:"age";i:30;}
 a:3:{s:3:"age";i:30;s:4:"name";s:8:"zhangsan";s:2:"id";s:4:"0001";}
+0001
 }}}
 
 PHP数组下标如果是字符串类型，转换到Python的字典类型，PHP数组元素下标为字典的key；反之，Python字典转换到PHP数组时，字典key作为PHP数组下标。
