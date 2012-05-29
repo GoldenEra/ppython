@@ -8,13 +8,13 @@
 
 在Oracle中创建一张用户表，程序围绕着这张表进行增删改查操作：
 {{{
-create table demo(
-  id varchar(40),  --用户ID
-  login varchar(20), --用户帐号
-  passwd varchar(20), --用户密码
-  userName varchar(20),  --用户姓名
-  age int,  --年龄
-  sex char(1)  --1:男 0:女
+create table users(
+  id varchar(40)       not null, --用户ID
+  userName varchar(20) not null, --用户姓名
+  age int              not null, --年龄
+  sex char(1)          not null, --1:男 0:女
+  tel varchar(21),               --电话
+  constraint PK_USERS primary key (ID)
 );
 }}}
 
