@@ -24,9 +24,9 @@ Python+Oracle的环境配置请参考这篇文章：http://programmerdigest.cn/2
 
 == PHP 的环境配置 ==
 
-Apache+PHP的配置资料，在互联网上非常多，这里不再说明。
+互联网上有非常多的关于Apache+PHP的配置文章，因此这里不再重复提供。
 
-对于PHP的配置一般来说只有一个要求：需要支持socket，可以通过phpinfo()输出，来检查是否符合要求，“Sockets Support”显示“enabled”即可。
+对于PHP的配置一般来说只有一个要求：需要支持socket。可以通过phpinfo()输出来检查是否符合要求，“Sockets Support”显示“enabled”即可。
 
 == Python 程序 ==
 
