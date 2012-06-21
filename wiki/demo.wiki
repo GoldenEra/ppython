@@ -148,8 +148,8 @@ import cx_Oracle
 os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8' 
 #数据库连接池
 pool = cx_Oracle.SessionPool(
-    user='diaoyf',
-    password='700327',
+    user='oracle_username',
+    password='oracle_passwd',
     dsn='127.0.0.1/xe',
     min=5,
     max=10,
