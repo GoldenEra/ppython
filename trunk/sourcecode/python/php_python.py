@@ -1,44 +1,72 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 import time
 import socket
+import os
 
 import process
 
-HOST = ''				#所有
-LISTEN_PORT = 21230		#服务侦听端口
-CHARSET = "utf-8"		#设置字符集
+# -------------------------------------------------
+# 基本配置
+# -------------------------------------------------
+LISTEN_PORT = 21230     #服务侦听端口
+CHARSET = "utf-8"       #设置字符集（和PHP交互的字符集）
 
 
+# -------------------------------------------------
+# Oracle数据库连接配置
+# -------------------------------------------------
+import cx_Oracle
+#数据库字符集
+os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8' 
+#数据库连接池
+pool = cx_Oracle.SessionPool(
+    user='diaoyf',
+    password='700327',
+    dsn='127.0.0.1/xe',
+    min=5,
+    max=10,
+    increment=1,
+    connectiontype=cx_Oracle.Connection,
+    threaded=True,
+    getmode=cx_Oracle.SPOOL_ATTRVAL_NOWAIT,
+    homogeneous=True)
+
+def getConn():
+    """获得数据库连接的公共函数"""
+    return pool.acquire()
+
+def closeConn(conn):
+    """释放数据库连接的公共函数"""
+    pool.release(conn)
+
+# -------------------------------------------------
+# 主程序
+#    请不要随意修改下面的代码
+# -------------------------------------------------
 if __name__ == '__main__':
 
-    print "-------------------------------------------"
-    print "- LAPP-JAVA (Socket) Service" 
-    print "- Time: %s" % time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())) 
-    print "-------------------------------------------"
+    print ("-------------------------------------------")
+    print ("- PPython Service")
+    print ("- Time: %s" % time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())) )
+    print ("-------------------------------------------")
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  #TCP/IP
-    sock.bind((HOST, LISTEN_PORT))  
+    sock.bind(('', LISTEN_PORT))  
     sock.listen(5)  
 
-    print "Listen port: %d" % LISTEN_PORT
-
-    print "charset: %s" % CHARSET
-
-    #自动程序运行
-
-    print "Server startup..."
+    print ("Listen port: %d" % LISTEN_PORT)
+    print ("charset: %s" % CHARSET)
+    print ("Server startup...")
 
     while 1:  
         connection,address = sock.accept()  #收到一个请求
 
-        print "client's IP:%s, PORT:%d" % address
+        #print ("client's IP:%s, PORT:%d" % address)
 
-        # 创建线程处理
+        # 处理线程
         try:
             process.ProcessThread(connection).start()
         except:
             pass
-
-
