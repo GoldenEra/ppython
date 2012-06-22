@@ -128,7 +128,7 @@ ppython框架文件 process.py：
 
 == PHP 程序 ==
 
-增加用户(增) demo_list.php
+增加用户(增) demo_add.php
 {{{
 <?php header("Content-Type: text/html; charset=utf-8");
 require_once('php_python.php');
@@ -187,3 +187,14 @@ $list = ppython("demo1::userList");
 
 ppython框架文件 php_python.php：
 请在这里下载 http://code.google.com/p/ppython/source/browse/trunk/sourcecode/php/php_python.php
+
+== 运行测试程序 ==
+
+1. 将php_python.py, process.py, demo1.py 三个文件复制到单独的目录，修改php_python.py文件权限可执行，启动python服务：
+{{{
+$ ./php_python.py
+}}}
+
+2. 将php_python.php, demo_add.php, demo_del.php, demo_change.php, demo_list.php 五个文件复制到Apache发布目录。
+
+3. 浏览器访问demo_add.php, demo_del.php, demo_change.php, demo_list.php地址，测试demo程序。
